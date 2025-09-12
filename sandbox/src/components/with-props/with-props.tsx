@@ -14,8 +14,8 @@ export const withParsedProps =
     };
     const contributionOptionsDefaults: Record<LangWithRegion, Array<number>> = {
       [Lang.CS_CZ]: [500, 1000, 5000],
-      [Lang.EN_US]: [100, 200, 300],
-      [Lang.EN_EU]: [100, 200, 300],
+      [Lang.EN_US]: [50, 100, 200],
+      [Lang.EN_EU]: [50, 100, 200],
     };
     const currentLang = props.lang || window.parent.document.documentElement.lang;
     const lang: LangWithRegion = (currentLang && langMap[currentLang.toLocaleLowerCase() as Lang]) || Lang.EN_EU;
