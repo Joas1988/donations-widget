@@ -3,7 +3,7 @@ import { S3Client, GetObjectCommand, CopyObjectCommand, DeleteObjectCommand } fr
 import currencyCodes from 'currency-codes';
 
 // Configuration constants
-const SENDER_EMAIL = 'no-reply@donations.happyhearts.cz';
+const SENDER_EMAIL = process.env.SENDER_EMAIL || 'no-reply@donations.example.com';
 const CHARSET = "UTF-8";
 const BUCKET_NAME = process.env.BUCKET_NAME; // Required: S3 bucket name for templates and audit logs
 const AMOUNT_DIVISOR = 100; // Amount stored in cents
@@ -24,8 +24,13 @@ export const handler = async (event) => {
     try {
         let orderNumber;
 
-        if (event.requestContext.http.method) {
+        // Support both API Gateway and direct invocation formats
+        if (event.requestContext?.http?.method) {
+            // API Gateway format
             orderNumber = JSON.parse(event.body).parameters?.orderNumber
+        } else if (event.parameters?.orderNumber) {
+            // Direct invocation format (for testing)
+            orderNumber = event.parameters.orderNumber;
         } else {
             console.error("Invalid event format.");
             return { statusCode: 400, body: JSON.stringify({ message: "Invalid event format." }) };

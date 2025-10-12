@@ -22,6 +22,13 @@ The following environment variables must be configured in AWS Lambda:
   - `audit_logs/` - Incoming payment audit logs
   - `audit_logs_mailed/` - Processed audit logs (archived)
 
+#### `SENDER_EMAIL` (Optional)
+- **Description**: Email address used as the sender for donation confirmations
+- **Example**: `no-reply@donations.yourcharity.org`
+- **Default**: `no-reply@donations.example.com`
+- **Requirements**: Domain must be verified in Resend
+- **Security**: Public value, but should match your organization's domain
+
 ### Upload Script
 
 For running the template upload script (`uploads/upload-templates.ps1`):
@@ -42,18 +49,19 @@ For running the template upload script (`uploads/upload-templates.ps1`):
 ### Via AWS Console
 
 1. Open AWS Lambda console
-2. Select function `ent_hh_confirm_mailer`
+2. Select your Lambda function (e.g., `your_confirm_mailer`)
 3. Go to Configuration → Environment variables
 4. Add/Edit:
    - `RESEND_API_KEY`: Your Resend API key
    - `BUCKET_NAME`: Your S3 bucket name
+   - `SENDER_EMAIL`: Your sender email address (optional)
 
 ### Via AWS CLI
 
 ```bash
 aws lambda update-function-configuration \
-  --function-name ent_hh_confirm_mailer \
-  --environment Variables="{RESEND_API_KEY=re_your_key,BUCKET_NAME=your-bucket}" \
+  --function-name your_confirm_mailer \
+  --environment Variables="{RESEND_API_KEY=re_your_key,BUCKET_NAME=your-bucket,SENDER_EMAIL=no-reply@donations.yourcharity.org}" \
   --region eu-central-1
 ```
 
