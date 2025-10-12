@@ -38,9 +38,11 @@ All templates support the following placeholders:
 ## S3 Storage
 
 Templates are stored in S3 at:
-`
-s3://ent-happy-hearts/email_templates/donation_confirmation_{lang}.html
-`
+```
+s3://${BUCKET_NAME}/email_templates/donation_confirmation_{lang}.html
+```
+
+Where `BUCKET_NAME` is configured via Lambda environment variable.
 
 Lambda loads templates from S3 with fallback logic:
 1. Try language-specific template (e.g., cs, sk, de)

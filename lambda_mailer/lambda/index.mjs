@@ -5,8 +5,13 @@ import currencyCodes from 'currency-codes';
 // Configuration constants
 const SENDER_EMAIL = 'no-reply@donations.happyhearts.cz';
 const CHARSET = "UTF-8";
-const BUCKET_NAME = process.env.BUCKET_NAME || "ent-happy-hearts";
+const BUCKET_NAME = process.env.BUCKET_NAME; // Required: S3 bucket name for templates and audit logs
 const AMOUNT_DIVISOR = 100; // Amount stored in cents
+
+// Validate required environment variables
+if (!BUCKET_NAME) {
+    throw new Error('BUCKET_NAME environment variable is required');
+}
 
 // Initialize Resend with API key from environment variable
 const resend = new Resend(process.env.RESEND_API_KEY);

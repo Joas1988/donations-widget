@@ -1,8 +1,18 @@
 # Upload Email Templates to S3
-$BUCKET = "ent-happy-hearts"
-$REGION = "eu-central-1"
+# Set your S3 bucket name and region
+$BUCKET = $env:S3_BUCKET_NAME
+$REGION = $env:AWS_REGION ?? "eu-central-1"
+
+if (-not $BUCKET) {
+    Write-Host "❌ Error: S3_BUCKET_NAME environment variable is required" -ForegroundColor Red
+    Write-Host "   Set it with: `$env:S3_BUCKET_NAME='your-bucket-name'" -ForegroundColor Yellow
+    exit 1
+}
 
 Write-Host "📧 Uploading email templates to S3..." -ForegroundColor Cyan
+Write-Host "   Bucket: $BUCKET" -ForegroundColor Gray
+Write-Host "   Region: $REGION" -ForegroundColor Gray
+Write-Host ""
 
 $templates = @(
     "donation_confirmation_en.html",
